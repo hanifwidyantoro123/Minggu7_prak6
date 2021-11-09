@@ -1,13 +1,14 @@
 @extends('layouts.app')
 
  @section('content')
- <div class="container">
- <div class="row justify-content-center">
- <div class="col-md-8">
- <div class="card">
- <div class="card-header">{{ __('STUDENT DATA') }}</div>
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-md-8">
+<div class="card">
+<div class="card-header">{{ __('STUDENT DATA') }}
+</div>
 
- <div class="card-body">
+            <div class="card-body">
  @if (session('status'))
  <div class="alert alert-success" role="alert">
  {{ session('status') }}
@@ -33,11 +34,12 @@
  <td>{{ $s->departement }}</td>
  <td><form action="/students/{{$s->id}}" method="post">
  <a href="/students/{{$s->id}}/edit" class="btn btnwarning">Edit</a>
+ 
  @csrf
  @method('DELETE')
  <button type="submit" name="delete" class="btn btndanger">Delete</button>
+ <a href="/students/{{$s->id}}" class="btn btn-primary">Show</a> 
 </form></td>
-
  </tr>
  @endforeach
  </tbody>

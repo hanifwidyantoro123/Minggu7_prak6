@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Student;
+use App\Models\User;
+use Illuminate\Support\Facades\Gate
 
-class StudentController extends Controller
+
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +16,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::all();
-        return view('students.index',['student'=>$students]);
-
+        $users = User::all();
+        return view('users.index',['user'=>$users]);
     }
 
     /**
@@ -26,8 +27,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('students.create');
-
+        //
     }
 
     /**
@@ -38,11 +38,7 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //add data
-        Student::create($request->all());
-        // if true, redirect to index
-        return redirect()->route('students.index')
-        ->with('success', 'Add data success!');
+        //
     }
 
     /**
@@ -53,8 +49,7 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        $student = Student::find($id);
-    return view('students.show',['student'=>$student]);
+        //
     }
 
     /**
@@ -65,8 +60,7 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        $student = Student::find($id);
-    return view('students.edit',['student'=>$student]);
+        //
     }
 
     /**
@@ -78,15 +72,7 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $student = Student::find($id);
-        $student->nim = $request->nim;
-        $student->name = $request->name;
-        $student->class = $request->class;
-        $student->departement = $request->departement;
-        $student->phone_number = $request->phone_number;
-        $student->save();
-        return redirect()->route('students.index');
-
+        //
     }
 
     /**
@@ -97,8 +83,14 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        $student = Student::find($id);
-        $student->delete();
-        return redirect()->route('students.index');
+        //
     }
+    public function __construct()
+{
+ //$this->middleware('auth');
+ $this->middleware(function($request, $next){
+ if(Gate::allows('manage-users')) return $next($request);
+ abort(403, 'Anda tidak memiliki cukup hak akses');
+ });
+}
 }
